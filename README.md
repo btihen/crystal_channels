@@ -2,11 +2,14 @@
 
 This uses channels back and forth between users and chat rooms.
 
+## CODE
+
+- **src_01_direct** - users directly messaging each other over channels 1 to 1
+- **src_02_chat** - users subscribe to a chat room - now we can do 1 to many over channels.  Now Fibers are interesting.  With one thread (& one output window its all readable).  With multi-threading (& one output window) - output is no longer readable.
+- **src_03_parellelism** - **TOTO:** write chat with each user having separate sessions / windows so outputs don't get jumbled
+
 **Questions**
 - how to I stop program AFTER all thread and fibers are finished!
-
-**TODO:**
-- **ADD parellism** - each user needs their own separate window / connection (tcp) - then it should be readable. (otherwise messages are all jumbled)
 
 ## Installation
 
