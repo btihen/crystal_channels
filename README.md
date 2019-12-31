@@ -4,8 +4,9 @@ This uses channels back and forth between users and chat rooms.
 
 **Questions**
 - how to I stop program AFTER all thread and fibers are finished!
-- this doesn't really work with only one window connection in parellel `time crystal build --release -Dpreview_mt  src/chat_room.cr -o ./chat_room`
-- for parellism - each user needs their own separate window / connection (tcp) - then it should be readable.
+
+**TODO:**
+- **ADD parellism** - each user needs their own separate window / connection (tcp) - then it should be readable. (otherwise messages are all jumbled)
 
 ## Installation
 
