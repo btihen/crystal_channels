@@ -1,0 +1,13 @@
+name: channels
+version: 0.1.0
+
+authors:
+  - Bill Tihen <btihen@gmail.com>
+
+targets:
+  channels:
+    main: src/channels.cr
+
+crystal: 0.32.1
+
+license: MIT
