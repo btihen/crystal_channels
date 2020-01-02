@@ -1,14 +1,8 @@
 class Message
-  getter sender : User, topic : String, receiver : User
-  private getter text : String
+  getter sender : User, topic : String, receiver : User, text : String
 
   def initialize(@sender, @text, @receiver=NoUser.new, @topic="")
     @text = text.strip
-    @topic = topic.strip
-  end
-
-  # DONT MUTATE AFTER SENDING!
-  def topic=(topic : String)
     @topic = topic.strip
   end
 
@@ -52,7 +46,7 @@ class User
 
   def initialize(@name="anonymous", @email="anon@none.ch")
     @channel = Channel(Message).new
-    puts "CREATED USER: #{to_s}"
+    # puts "CREATED USER: #{to_s}"
     listen_for_messages
   end
 
@@ -120,7 +114,7 @@ class Room
   def initialize(@topic="default")
     @users = {} of String => User
     @channel = Channel(Message).new
-    puts "CREATED room #{@topic}"
+    # puts "CREATED room #{@topic}"
     listen_for_messages
   end
 
@@ -128,7 +122,7 @@ class Room
     return self if users.has_key? user.email
 
     @users[user.email] = user
-    puts "#{user.name} has JOINED room #{topic}"
+    # puts "#{user.name} has JOINED room #{topic}"
     self
   end
 
@@ -136,7 +130,7 @@ class Room
     return self unless users.has_key? user.email
 
     @users.delete(user.email)
-    puts "#{user.name} has LEFT room #{topic}"
+    # puts "#{user.name} has LEFT room #{topic}"
     self
   end
 
@@ -149,8 +143,10 @@ class Room
     puts "Rejected Message" unless users.has_key?(sender.email)
     return self             unless users.has_key?(sender.email)
 
-    message.topic = "#{topic.upcase} #{message.topic}"
-    receiver = message.receiver
+    receiver     = message.receiver
+    topic_w_room = "#{topic.upcase} #{message.topic}"
+    mesg_w_topic = Message.new( sender: sender, receiver: receiver,
+                                text: message.text, topic: topic_w_room )
     case receiver.name
     when "anonymous"
       puts "sending broadcast in #{to_s}"
@@ -159,8 +155,6 @@ class Room
       puts "sending chat direct to: #{receiver.to_s}"
       spawn send_message(receiver, message) if users.has_key?(receiver.email)
     end
-    # with spawn on a method - `Fiber.yield` not needed
-    # Fiber.yield
     self
   end
 
@@ -241,7 +235,7 @@ module ChatChannels
   # let spawned fibers / channels run
   Fiber.yield
   #
-  sleep 3  # let all the channels finish before disconnecting abruptly
+  sleep 4  # let all the channels finish before disconnecting abruptly
 
   # users.each do |user|
   #   # chat.leave(user)
